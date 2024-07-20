@@ -1,0 +1,30 @@
+service {
+    dhcp-server {
+        {% for network in dhcp_server['networks'] -%}
+        shared-network-name {{network['name']}} {
+            option {
+                {% for option, value in network['option'].items() -%}
+                {{option}} {{value}}
+                {%endfor-%}
+            }
+            {% for subnet in network['subnets'] -%}
+            subnet {{subnet['name']}} {
+                subnet-id {{subnet['subnet-id']}}
+                option {
+                    {% for option, value in subnet['option'].items() -%}
+                    {{option}} {{value}}
+                    {%endfor-%}
+                }
+                {% for range, data in subnet['range'].items() -%}
+                range {{range}} {
+                    {% for option, value in data.items() -%}
+                    {{option}} {{value}}
+                    {%endfor-%}
+                }
+                {%endfor-%}
+            }
+            {%endfor-%}
+        }
+        {%endfor-%}
+    }
+}

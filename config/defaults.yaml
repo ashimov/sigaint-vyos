@@ -10,8 +10,27 @@ dns_servers:
   - 2620:fe::fe
   - 2620:fe::9
 
+dhcp_server:
+  networks:
+    - name: NET_NSW01_ADMIN
+      option:
+        domain-name: "sigaint.au"
+        name-server: "9.9.9.9"
+      subnets:
+        - name: 10.120.0.32/27
+          subnet-id: 1
+          option:
+            default-router: "10.120.0.33"
+          static-mappings:
+            - name: idrac-6BFVY42
+              ip-address: 10.120.0.46
+              mac: 74:e6:e2:fa:70:06
+          range:
+            0:
+              start: 10.120.0.34
+              stop: 10.120.0.62
+
 interfaces:
-  
   ethernet:
     - name: eth0
       description: "NET_NSW01_WAN"
