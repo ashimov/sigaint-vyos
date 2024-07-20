@@ -1,0 +1,6 @@
+- hosts: routers
+  gather_facts: 'no'
+  tasks:
+  - name: sigaint-vyos | configure dns servers
+    vyos.vyos.vyos_config:
+      src: "../templates/name-servers.j2"

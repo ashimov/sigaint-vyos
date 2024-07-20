@@ -1,0 +1,30 @@
+interfaces {
+    {% for ethernet in interfaces['ethernet'] -%}
+    ethernet {{ethernet['name']}} {
+        description {{ethernet['description']}}
+        {% for address in ethernet['address'] -%}
+        address {{address}}
+        {% endfor -%}
+        {% if ethernet['ipv6']['enable'] -%}
+        ipv6 {
+            {% for address in ethernet['ipv6']['address'] -%}
+            address {{address}}
+            {%endfor-%}
+        }
+        dhcpv6-options {
+            rapid-commit
+            {% for pd, data in ethernet['dhcpv6-options']['pd'].items() -%}
+            pd {{pd}} {
+                {% for pd_if in data['interfaces'] -%}
+                interface {{pd_if['name']}} {
+                    address {{pd_if['address']}}
+                    sla-id {{pd_if['sla-id']}}
+                }
+                {% endfor -%}
+            }
+            {% endfor -%}
+        }
+        {%endif-%}
+    }
+    {% endfor -%}
+}

@@ -1,0 +1,23 @@
+interfaces {
+    {% for bridge in interfaces['bridges'] -%}
+    bridge {{bridge['name'] }} {
+        stp
+        enable-vlan
+        member {
+            {% for member in bridge['members'] -%}
+            interface {{member['interface']}} {
+                allowed-vlan {{member['allowed_vlan']}}
+            }
+            {% endfor -%}
+        }
+        {% for vif in bridge['vifs'] -%}
+        vif {{vif['vlan_id']}} {
+            {% for address in vif['address'] -%}
+            address {{address}}
+            {% endfor -%}
+            description {{vif['description']}}
+        } 
+        {% endfor -%}
+    }
+    {% endfor -%}
+}

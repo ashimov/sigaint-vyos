@@ -1,0 +1,75 @@
+---
+ntp_servers:
+  - time1.google.com
+  - time2.google.com
+  - time3.google.com
+
+dns_servers:
+  - 9.9.9.9
+  - 149.112.112.112
+  - 2620:fe::fe
+  - 2620:fe::9
+
+interfaces:
+  
+  ethernet:
+    - name: eth0
+      description: "NET_NSW01_WAN"
+      address:
+        - dhcp
+        - dhcpv6
+      ipv6:
+        enable: true
+        address:
+          - autoconf
+      dhcpv6-options:
+        pd:
+          0:
+            length: 56
+            interfaces:
+              - name: "br0.13"
+                address: 1
+                sla-id: 0
+              - name: "br0.20"
+                address: 1
+                sla-id: 1
+  bridges:
+  - name: br0
+    members:
+      - interface: eth3
+        allowed_vlan: "10-50"
+      - interface: eth4
+        allowed_vlan: "10-50"
+    vifs:
+    - vlan_id: 10
+      address:
+        - 10.120.0.33/27
+      description: "NET_NSW01_ADMIN"
+    - vlan_id: 11
+      address:
+        - 10.120.0.65/27
+      description: "NET_NSW01_PROTECTED"
+    - vlan_id: 12
+      address:
+        - 10.120.0.97/27
+      description: "NET_NSW01_SECURITY"
+    - vlan_id: 13
+      address:
+        - 10.120.0.129/26
+      description: "NET_NSW01_WIFI"
+    - vlan_id: 14
+      address:
+        - 10.120.0.193/27
+      description: "NET_NSW01_SHARED"
+    - vlan_id: 15
+      address:
+        - 10.120.0.225/27
+      description: "NET_NSW01_HOSTING"
+    - vlan_id: 20
+      address:
+        - 10.120.1.1/24
+      description: "NET_NSW01_DMZ"
+    - vlan_id: 21
+      address:
+        - 10.120.2.1/24
+      description: "NET_NSW01_VMNET"

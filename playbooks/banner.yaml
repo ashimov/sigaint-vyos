@@ -1,0 +1,18 @@
+- hosts: routers
+  gather_facts: 'no'
+  tasks:
+    - name: sigaint-vyos | configure pre-login banners
+      vyos.vyos.vyos_banner:
+        banner: pre-login
+        state: absent
+        
+    - name: sigaint-vyos | configure post-login banners
+      vyos.vyos.vyos_banner:
+        banner: post-login
+        text: |
+          Welcome to VyOS!
+          
+            ┌── ┐
+            . VyOS 1.5 
+            └ ──┘
+        state: present

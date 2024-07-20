@@ -1,0 +1,15 @@
+- hosts: routers
+  gather_facts: 'no'
+  tasks:
+    - debug:
+        msg: "{{ lookup('template', '../templates/interfaces_bridge.j2') }}"
+    - debug:
+        msg: "{{ lookup('template', '../templates/interfaces_ethernet.j2') }}"
+        
+    - name: sigaint-vyos | configure ethernet interfaces
+      vyos.vyos.vyos_config:
+        src: "../templates/interfaces_ethernet.j2"
+        
+    - name: sigaint-vyos | configure bridge interfaces
+      vyos.vyos.vyos_config:
+        src: "../templates/interfaces_bridge.j2"
