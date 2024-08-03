@@ -1,5 +1,9 @@
 - hosts: routers
   gather_facts: 'no'
+  vars_files:
+    - ../config/defaults.yaml
+    - ../config/dhcp-server.yaml
+    - ../config/interfaces.yaml
   tasks:
     - debug:
         msg: "{{ lookup('template', '../templates/interfaces_bridge.j2') }}"

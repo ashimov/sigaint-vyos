@@ -1,5 +1,9 @@
 - hosts: routers
   gather_facts: 'no'
+  vars_files:
+    - ../config/defaults.yaml
+    - ../config/dhcp-server.yaml
+    - ../config/interfaces.yaml
   tasks:
   - name: sigaint-vyos | configure dns servers
     vyos.vyos.vyos_config:

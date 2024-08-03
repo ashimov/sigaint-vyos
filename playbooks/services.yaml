@@ -1,9 +1,12 @@
 - hosts: routers
   gather_facts: 'no'
+  vars_files:
+    - ../config/defaults.yaml
+    - ../config/dhcp-server.yaml
+    - ../config/interfaces.yaml
   tasks:
     - debug:
         msg: "{{ lookup('template', '../templates/dhcp-server.j2') }}"
-
     - name: sigaint-vyos | configure dhcp-server
       vyos.vyos.vyos_config:
         src: "../templates/dhcp-server.j2"

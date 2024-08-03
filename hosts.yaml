@@ -1,6 +1,6 @@
 routers:
   hosts:
-    10.120.0.180:
+    10.120.0.184:
   vars:
     ansible_python_interpreter: /usr/bin/python3
     ansible_network_os: vyos
@@ -8,4 +8,5 @@ routers:
     ansible_user: vyos
     ansible_ssh_pass: password
     ansible_persistent_command_timeout: 300
+    ansible_command_timeout: 300
     
