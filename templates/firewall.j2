@@ -1,0 +1,15 @@
+firewall {
+    {{ item.protocol }} {
+        name {{ item.name }} {
+            default-action {{ item.default_action }}
+            default-log
+            {% for rule in item.rules -%}
+            rule {{ rule.number }} {
+                {% filter indent(width=20) %}
+                    {{ rule.rule }}
+                {% endfilter %}
+            }
+            {% endfor -%}
+        }
+    }
+}

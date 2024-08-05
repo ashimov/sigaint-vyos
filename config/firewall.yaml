@@ -1,0 +1,82 @@
+firewall_zones:
+  - name: "WAN"
+    description: "The Internet"
+    interface: "eth0"
+    firewalls:
+      from: []
+
+  - name: "ADMIN"
+    description: "Admin Zone"
+    interface: "br0.10"
+    firewalls:
+      from: []
+
+  - name: "PROTECTED"
+    description: "Administration environment"
+    interface: "br0.11"
+    firewalls:
+      from: []
+
+  - name: "SECURITY"
+    description: "Security Administration"
+    interface: "br0.12"
+    firewalls:
+      from: []
+
+  - name: "WIFI"
+    description: "WIFI zone"
+    interface: "br0.13"
+    firewalls:
+      from:
+        - { zone: "WAN", name: "WAN-WIFI", protocol: ipv4 } # ipv6: true if ipv6
+
+  - name: "SHARED"
+    description: "Shared insecure infrastructure"
+    interface: "br0.14"
+    firewalls:
+      from: []
+
+  - name: "HOSTING"
+    description: "Virtualization and Hosting"
+    interface: "br0.15"
+    firewalls:
+      from: []
+
+  - name: "DMZ"
+    description: "Internet connected ipv6"
+    interface: "br0.20"
+    firewalls:
+      from: []
+
+  - name: "VMNET"
+    description: "Internal hosting"
+    interface: "br0.21"
+    firewalls:
+      from: []
+
+firewalls:
+  - name: WAN-WIFI
+    protocol: ipv4
+    description: Internet to WiFi IPv4
+    default_action: reject
+    rules:
+      - number: 100
+        rule: |
+          action accept
+          state established
+          state related
+      - number: 110
+        rule: |
+          action drop
+          state invalid
+      
+  - name: WIFI-WAN
+    protocol: ipv4
+    description: WiFi to Internet IPv4
+    default_action: reject
+    rules:
+      - number: 100
+        rule: |
+          description "Accept All Traffic"
+          action accept
+

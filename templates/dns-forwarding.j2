@@ -1,0 +1,12 @@
+service {
+    dns {
+        forwarding {
+            {% for server in dns_forwarding_allow_from -%}
+            allow-from {{ server }}
+            {% endfor -%}
+            listen-address "0.0.0.0"
+            listen-address "::"
+            system
+        }
+    }
+}

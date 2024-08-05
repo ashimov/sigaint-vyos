@@ -1,0 +1,21 @@
+firewall {
+    zone {
+        {{ item.name }} {
+            interface "{{ item.interface }}"
+            description "{{ item.description }}"
+            default-action {{ item.default_action | default("reject") }}
+            default-log
+            {% for firewall in item.firewalls.from -%}
+            from {{ firewall.zone }} {
+                firewall {
+                    {% if firewall.protocol == "ipv6" -%}
+                        ipv6-name {{ firewall.name }}
+                    {% else %}
+                        name {{ firewall.name }}
+                    {% endif -%}
+                }
+            }
+            {% endfor -%}
+        }
+    }
+}

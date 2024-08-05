@@ -71,4 +71,4 @@ dhcp_server:
           range:
             0:
               start: 10.120.0.230
-              stop: 10.120.0.225
+              stop: 10.120.0.255

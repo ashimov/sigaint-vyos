@@ -1,0 +1,16 @@
+- hosts: routers
+  gather_facts: 'no'
+  vars_files:
+    - ../config/defaults.yaml
+    - ../config/dhcp-server.yaml
+    - ../config/firewall.yaml
+  tasks:
+    - name: sigaint-vyos | configure firewalls
+      vyos.vyos.vyos_config:
+        src: "../templates/firewall.j2"
+      with_items: "{{ firewalls }}"
+
+    - name: sigaint-vyos | configure firewall zones
+      vyos.vyos.vyos_config:
+        src: "../templates/firewall-zone.j2"
+      with_items: "{{ firewall_zones }}"

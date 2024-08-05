@@ -8,3 +8,6 @@
   - name: sigaint-vyos | configure dns servers
     vyos.vyos.vyos_config:
       src: "../templates/name-servers.j2"
+  - name: sigaint-vyos | configure dns forwarding
+    vyos.vyos.vyos_config:
+      src: "../templates/dns-forwarding.j2"
