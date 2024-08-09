@@ -80,3 +80,26 @@ firewalls:
           description "Accept All Traffic"
           action accept
 
+  - name: WIFI-SECURITY
+    protocol: ipv4
+    description: WiFi to Security IPv4
+    default_action: reject
+    rules:
+      - number: 100
+        rule: |
+          action accept
+          state established
+          state related
+      - number: 110
+        rule: |
+          action drop
+          state invalid
+      - number: 120
+        rule: |
+          action accept
+          description "Blue Iris"
+          destination {
+              address 10.120.0.98
+              port 443,80,81,3389
+          }
+          protocol tcp
