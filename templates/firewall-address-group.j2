@@ -1,0 +1,9 @@
+firewall {
+    group {
+        address-group {{ item.name }} {
+            {% for address in item.addresses -%}
+            address {{ address }}
+            {% endfor -%}
+        }
+    }
+}

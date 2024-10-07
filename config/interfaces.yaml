@@ -30,33 +30,29 @@ interfaces:
       vifs:
         - vlan_id: 10
           address:
-            - 10.120.0.33/27
+            - 10.120.10.1/24
           description: "NET_NSW01_ADMIN"
         - vlan_id: 11
           address:
-            - 10.120.0.65/27
+            - 10.120.11.1/27
           description: "NET_NSW01_PROTECTED"
         - vlan_id: 12
           address:
-            - 10.120.0.97/27
+            - 10.120.12.1/24
           description: "NET_NSW01_SECURITY"
         - vlan_id: 13
           address:
-            - 10.120.0.129/26
+            - 10.120.13.1/24
           description: "NET_NSW01_WIFI"
         - vlan_id: 14
           address:
-            - 10.120.0.193/27
-          description: "NET_NSW01_SHARED"
-        - vlan_id: 15
-          address:
-            - 10.120.0.225/27
+            - 10.120.14.1/24
           description: "NET_NSW01_HOSTING"
         - vlan_id: 20
           address:
-            - 10.120.1.1/24
+            - 10.120.20.1/24
           description: "NET_NSW01_DMZ"
         - vlan_id: 21
           address:
-            - 10.120.2.1/24
+            - 10.120.21.1/24
           description: "NET_NSW01_VMNET"

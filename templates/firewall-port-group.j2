@@ -1,0 +1,9 @@
+firewall {
+    group {
+        port-group {{ item.name }} {
+            {% for port in item.ports -%}
+            port {{ port }}
+            {% endfor -%}
+        }
+    }
+}

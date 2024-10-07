@@ -4,7 +4,18 @@
     - ../config/defaults.yaml
     - ../config/dhcp-server.yaml
     - ../config/firewall.yaml
+    - ../config/firewall-groups.yaml
   tasks:
+    - name: sigaint-vyos | configure firewall address-groups
+      vyos.vyos.vyos_config:
+        src: "../templates/firewall-address-group.j2"
+      with_items: "{{ firewall_groups.address_groups }}"
+
+    - name: sigaint-vyos | configure firewall port-groups
+      vyos.vyos.vyos_config:
+        src: "../templates/firewall-port-group.j2"
+      with_items: "{{ firewall_groups.port_groups }}"
+
     - name: sigaint-vyos | configure firewalls
       vyos.vyos.vyos_config:
         src: "../templates/firewall.j2"
