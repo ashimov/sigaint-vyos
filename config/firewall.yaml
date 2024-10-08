@@ -30,12 +30,6 @@ firewall_zones:
       from:
         - { zone: "WAN", name: "WAN-WIFI", protocol: ipv4 } # ipv6: true if ipv6
 
-  - name: "SHARED"
-    description: "Shared insecure infrastructure"
-    interface: "br0.15"
-    firewalls:
-      from: []
-
   - name: "DMZ"
     description: "Internet connected ipv6"
     interface: "br0.20"
@@ -61,7 +55,7 @@ firewalls:
           state related
       - number: 110
         rule: |
-          action drop
+          action reject
           state invalid
       
   - name: WIFI-WAN
@@ -86,7 +80,7 @@ firewalls:
           state related
       - number: 110
         rule: |
-          action drop
+          action reject
           state invalid
       - number: 120
         rule: |

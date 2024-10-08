@@ -23,11 +23,12 @@ firewall_groups:
     #
     - name: OUT_OF_BAND
       addresses:
-        - 10.120.10.10 # idrac-1
-        - 10.120.10.11 # idrac-2
-        - 10.120.10.12 # idrac-3
-        - 10.120.10.13 # idrac-4
-        - 10.120.10.14 # idrac-5
+        - 10.120.10.10 # idrac-6BFVY42
+        - 10.120.10.11 # idrac-8505qm2
+        - 10.120.10.12 # idrac-9qk2vg2
+        - 10.120.10.13 # idrac-9qd4vg2
+        - 10.120.10.14 # xcc-7x02-j300cw5m
+        - 10.120.10.14 # xcc-7x02-j300cw5
 
     # NTP servers for time sync
     # We use the Google ones here switching from ANU.

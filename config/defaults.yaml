@@ -11,5 +11,5 @@ name_servers:
   - 2620:fe::9
 
 dns_forwarding_allow_from:
-  - 10.120.0.0/26
+  - 10.120.0.0/16
   - 2401:d002:7800::720/128
