@@ -1,6 +1,9 @@
 firewall {
     zone {
         {{ item.name }} {
+            {% if item.name == "LOCAL" -%}
+            local-zone
+            {% else %}
             interface "{{ item.interface }}"
             description "{{ item.description }}"
             default-action {{ item.default_action | default("reject") }}
@@ -16,6 +19,7 @@ firewall {
                 }
             }
             {% endfor -%}
+            {% endif -%}
         }
     }
 }

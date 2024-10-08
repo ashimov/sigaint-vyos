@@ -1,27 +1,40 @@
 firewall_zones:
+
+  # The name `LOCAL` is reserved for the local zone
+  - name: "LOCAL"
+    description: "Local zone"
+    firewalls:
+      from:
+        - { zone: "WAN", name: "WAN-LOCAL", protocol: ipv4 } # ipv6: true if ipv6
+
   - name: "WAN"
     description: "The Internet"
     interface: "eth0"
     firewalls:
-      from: []
+      from:
+        - { zone: "WIFI",  name: "WIFI-WAN",  protocol: ipv4 } # ipv6: true if ipv6
+        - { zone: "LOCAL", name: "LOCAL-WAN", protocol: ipv4 } # ipv6: true if ipv6
 
   - name: "ADMIN"
     description: "Admin Zone"
     interface: "br0.10"
     firewalls:
-      from: []
+      from:
+        - { zone: "PROTECTED", name: "ADMIN-PROTECTED", protocol: ipv4 } # ipv6: true if ipv6
 
   - name: "PROTECTED"
     description: "Administration environment"
     interface: "br0.11"
     firewalls:
-      from: []
+      from:
+        - { zone: "ADMIN", name: "PROTECTED-ADMIN", protocol: ipv4 } # ipv6: true if ipv6
 
   - name: "SECURITY"
     description: "Security Administration"
     interface: "br0.12"
     firewalls:
-      from: []
+      from:
+        - { zone: "WIFI", name: "WIFI-SECURITY", protocol: ipv4 } # ipv6: true if ipv6
 
   - name: "WIFI"
     description: "WIFI zone"
@@ -31,7 +44,7 @@ firewall_zones:
         - { zone: "WAN", name: "WAN-WIFI", protocol: ipv4 } # ipv6: true if ipv6
 
   - name: "DMZ"
-    description: "Internet connected ipv6"
+    description: "Internet connected"
     interface: "br0.20"
     firewalls:
       from: []
@@ -43,6 +56,11 @@ firewall_zones:
       from: []
 
 firewalls:
+
+  ##########################################################
+  # IPv4 Firewall Rules go here                            #
+  ##########################################################
+
   - name: WAN-WIFI
     protocol: ipv4
     description: Internet to WiFi IPv4
@@ -91,3 +109,113 @@ firewalls:
               port 443,80,81,3389
           }
           protocol tcp
+
+  - name: PROTECTED-ADMIN
+    protocol: ipv4
+    description: Protected to Admin IPv4
+    default_action: reject
+    rules:
+      - number: 100
+        rule: |
+          action accept
+          state established
+          state related
+      - number: 110
+        rule: |
+          action reject
+          state invalid
+      - number: 120
+        rule: |
+          action accept
+          description "Device management access OOB"
+          destination {
+            group {
+              address-group OUT_OF_BAND
+            }
+          }
+          protocol tcp_udp
+      - number: 130
+        rule: |
+          action accept
+          description "Device management access OTHER"
+          destination {
+            group {
+              address-group MANAGEMENT
+            }
+          }
+          protocol tcp_udp
+
+  - name: ADMIN-PROTECTED
+    protocol: ipv4
+    description: Admin to Protected network IPv4
+    default_action: reject
+    rules:
+      - number: 100
+        rule: |
+          action accept
+          state established
+          state related
+      - number: 110
+        rule: |
+          action reject
+          state invalid
+
+  - name: LOCAL-WAN
+    protocol: ipv4
+    description: LOCAL to WAN IPv4
+    default_action: reject
+    rules:
+      - number: 100
+        rule: |
+          action accept
+
+  - name: WAN-LOCAL
+    protocol: ipv4
+    description: WAN to LOCAL IPv4
+    default_action: reject
+    rules:
+      - number: 100
+        rule: |
+          action accept
+          state established
+          state related
+      - number: 110
+        rule: |
+          action accept
+          destination {
+              port 22
+          }
+          protocol tcp
+      - number: 120
+        rule: |
+          action reject
+          state invalid
+
+##########################################################
+# IPv6 Firewall Rules go here                            #
+##########################################################
+  - name: WAN-LOCAL-6
+    protocol: ipv6
+    description: Internet to Local IPv6
+    default_action: reject
+    rules:
+      - number: 100
+        rule: |
+          action accept
+          state established
+          state related
+      - number: 120
+        rule: |
+          action accept
+          protocol icmpv6
+      - number: 130
+        rule: |
+          action accept
+          description "DHCPv6 Replies"
+          destination {
+              port 546
+          }
+          protocol udp
+          source {
+              port 547
+          }
