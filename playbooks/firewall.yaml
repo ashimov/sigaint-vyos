@@ -21,7 +21,7 @@
         src: "../templates/firewall.j2"
       with_items: "{{ firewalls }}"
 
-    - name: sigaint-vyos | configure firewall zones
-      vyos.vyos.vyos_config:
-        src: "../templates/firewall-zone.j2"
-      with_items: "{{ firewall_zones }}"
+ #   - name: sigaint-vyos | configure firewall zones
+ #     vyos.vyos.vyos_config:
+ #       src: "../templates/firewall-zone.j2"
+ #     with_items: "{{ firewall_zones }}"

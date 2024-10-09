@@ -1,19 +1,22 @@
 firewall_zones:
-
   # The name `LOCAL` is reserved for the local zone
   - name: "LOCAL"
     description: "Local zone"
+    local_zone: true
     firewalls:
       from:
-        - { zone: "WAN", name: "WAN-LOCAL", protocol: ipv4 } # ipv6: true if ipv6
+         - { zone: "WAN", name: "WAN-LOCAL",   protocol: ipv4 } # ipv6: true if ipv6
+         - { zone: "WAN", name: "WAN-LOCAL-6", protocol: ipv6 } # ipv6: true if ipv6
 
   - name: "WAN"
     description: "The Internet"
+    default_action: accept
     interface: "eth0"
     firewalls:
       from:
-        - { zone: "WIFI",  name: "WIFI-WAN",  protocol: ipv4 } # ipv6: true if ipv6
-        - { zone: "LOCAL", name: "LOCAL-WAN", protocol: ipv4 } # ipv6: true if ipv6
+        - { zone: "WIFI",  name: "WIFI-WAN",    protocol: ipv4 } # ipv6: true if ipv6
+        - { zone: "LOCAL", name: "LOCAL-WAN",   protocol: ipv4 } # ipv6: true if ipv6
+        - { zone: "LOCAL", name: "LOCAL-WAN-6", protocol: ipv6 } # ipv6: true if ipv6
 
   - name: "ADMIN"
     description: "Admin Zone"
@@ -49,6 +52,8 @@ firewall_zones:
     firewalls:
       from: []
 
+  - name: "DMZ"
+    description: "Internet connected"
   - name: "VMNET"
     description: "Internal hosting"
     interface: "br0.21"
@@ -169,6 +174,15 @@ firewalls:
         rule: |
           action accept
 
+  - name: LOCAL-WAN-6
+    protocol: ipv6
+    description: LOCAL to WAN IPv6
+    default_action: reject
+    rules:
+      - number: 100
+        rule: |
+          action accept
+
   - name: WAN-LOCAL
     protocol: ipv4
     description: WAN to LOCAL IPv4
@@ -186,10 +200,6 @@ firewalls:
               port 22
           }
           protocol tcp
-      - number: 120
-        rule: |
-          action reject
-          state invalid
 
 ##########################################################
 # IPv6 Firewall Rules go here                            #
